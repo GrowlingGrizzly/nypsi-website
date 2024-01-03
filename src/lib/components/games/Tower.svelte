@@ -23,11 +23,11 @@
           case "b":
             return { style: 2, emoji: { name: "🥚" } };
           case "g":
-            return { style: 2, emoji: { name: "blue_gem", id: "1046866209326514206" } };
+            return { style: 2, emoji: { name: "blue_gem", id: "1046854542047850556" } };
           case "c":
             return { style: 3, emoji: { name: "🥚" } };
           case "m":
-            return { style: 3, emoji: { name: "blue_gem", id: "1046866209326514206" } };
+            return { style: 3, emoji: { name: "blue_gem", id: "1046854542047850556" } };
           case "x":
             return { style: 4 };
           default:
