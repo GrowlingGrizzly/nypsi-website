@@ -1,7 +1,9 @@
 <script lang="ts">
   import { invalidateAll } from "$app/navigation";
-  import { PUBLIC_HCAPTCHA_SITEKEY } from "$env/static/public";
+  import { env } from "$env/dynamic/public";
+  import { auth } from "$lib/state.svelte.js";
   import { Check } from "lucide-svelte";
+  import { onMount } from "svelte";
 
   let { data } = $props();
 
@@ -13,7 +15,7 @@
     if (!data.solved && loaded) {
       // @ts-expect-error
       hcaptcha?.render(captchaElement, {
-        sitekey: PUBLIC_HCAPTCHA_SITEKEY,
+        sitekey: env.PUBLIC_HCAPTCHA_SITEKEY,
         theme: "dark",
         callback: () => {
           form.submit();
@@ -24,10 +26,24 @@
       });
     }
   });
+
+  onMount(() => {
+    if (data.authUser && !auth?.value) {
+      auth.value = {
+        authenticated: true,
+        user: data.authUser,
+      };
+    } else {
+      auth.value = {
+        authenticated: false,
+      };
+    }
+  });
 </script>
 
 <svelte:head>
   <title>captcha / nypsi</title>
+  <meta name="og:title" content="captcha / nypsi" />
 
   <script
     src="https://js.hcaptcha.com/1/api.js?render=explicit&recaptchacompat=off"
@@ -35,6 +51,8 @@
     defer
     onload={() => (loaded = true)}
   ></script>
+
+  <meta name="robots" content="noindex" />
 </svelte:head>
 
 <div class="mt-16 flex w-full justify-center md:mt-32">

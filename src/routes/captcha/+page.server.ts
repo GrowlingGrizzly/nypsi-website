@@ -1,5 +1,5 @@
-import { HCAPTCHA_SECRET } from "$env/static/private";
-import { PUBLIC_HCAPTCHA_SITEKEY } from "$env/static/public";
+import { env } from "$env/dynamic/private";
+import { env as publicEnv } from "$env/dynamic/public";
 import prisma from "$lib/server/database.js";
 import { error, redirect } from "@sveltejs/kit";
 
@@ -34,7 +34,12 @@ export async function load({ url, locals }) {
       },
     });
 
-  return { id: query.id, solved: query.solved, rickroll: Math.floor(Math.random() * 100) <= 5 };
+  return {
+    id: query.id,
+    solved: query.solved,
+    rickroll: Math.floor(Math.random() * 100) <= 5,
+    authUser: auth.user,
+  };
 }
 
 export const actions = {
@@ -45,9 +50,9 @@ export const actions = {
     const token = formData.get("h-captcha-response");
 
     const body = new URLSearchParams({
-      secret: HCAPTCHA_SECRET,
+      secret: env.HCAPTCHA_SECRET,
       response: token as string,
-      sitekey: PUBLIC_HCAPTCHA_SITEKEY,
+      sitekey: publicEnv.PUBLIC_HCAPTCHA_SITEKEY,
     });
 
     const res = await fetch("https://hcaptcha.com/siteverify", {

@@ -2,8 +2,8 @@
   import { goto } from "$app/navigation";
   import { page } from "$app/stores";
   import ItemSearch from "$lib/components/items/ItemSearch.svelte";
-  import { items } from "$lib/state.svelte";
-  import { onMount, setContext } from "svelte";
+  import { items, tags } from "$lib/state.svelte";
+  import { onMount } from "svelte";
 
   let { children, data } = $props();
 
@@ -44,35 +44,29 @@
       leaderboardName: "top monthly votes",
       selected: false,
       showItems: false,
-      descriptor: "votes",
     },
     {
       name: "wordle",
       leaderboardName: "top wordle wins",
       selected: false,
       showItems: false,
-      descriptor: "wins",
     },
     {
       name: "lottery",
       leaderboardName: "top lottery wins",
       selected: false,
       showItems: false,
-      descriptor: "wins",
     },
     {
       name: "commands",
       leaderboardName: "top command uses",
       selected: false,
       showItems: false,
-      descriptor: "uses",
     },
     { name: "items", leaderboardName: "", selected: false, showItems: true, path: "" },
   ]);
 
   let showChild = $state(true);
-
-  setContext("leaderboard-options", options);
 
   if (!$page.url.pathname.endsWith("leaderboard")) {
     const selected = options.find((i) => $page.url.pathname.endsWith(i.data || i.name));
@@ -85,6 +79,7 @@
 
   onMount(() => {
     items.value = data.items;
+    tags.value = data.tags;
   });
 </script>
 
@@ -93,6 +88,7 @@
     {#each options as option}
       <li>
         <a
+          data-sveltekit-preload-code="viewport"
           class={option.selected ? "focus" : ""}
           href="/leaderboard{option.showItems ? '' : `/${option.data || option.name}`}"
           onclick={() => {

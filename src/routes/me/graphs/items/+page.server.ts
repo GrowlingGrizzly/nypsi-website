@@ -2,10 +2,10 @@ import getItems from "$lib/functions/items.js";
 import getItemCountDataForUser from "$lib/server/functions/graphs/getItemCountDataForUser.js";
 import { redirect } from "@sveltejs/kit";
 
-export async function load({ parent, url, setHeaders }) {
+export async function load({ parent, url, setHeaders, fetch }) {
   try {
     setHeaders({
-      "cache-control": "private, max-age=0",
+      "cache-control": "private, max-age=3600, must-revalidate",
     });
   } catch {}
 
@@ -17,7 +17,7 @@ export async function load({ parent, url, setHeaders }) {
   const itemId = url.searchParams.get("item");
 
   if (itemId) {
-    const items = await getItems();
+    const items = await getItems(fetch);
 
     const itemData = items.find((i) => i.id === itemId);
 

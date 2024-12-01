@@ -3,7 +3,7 @@ import { json } from "@sveltejs/kit";
 
 export async function GET({ setHeaders }) {
   setHeaders({
-    "cache-control": "max-age=0, s-maxage=300",
+    "cache-control": "public, max-age=300, must-revalidate",
   });
 
   // very proud of myself for this
@@ -12,12 +12,12 @@ export async function GET({ setHeaders }) {
 
   const query =
     await prisma.$queryRaw`select sum("CommandUse"."uses") as value, "CommandUse"."userId", "User"."lastKnownTag", "Economy"."banned", "Tags"."tagId" from "User"
-     left join "CommandUse" on "CommandUse"."userId" = "User"."id" 
-     left join "Economy" on "Economy"."userId" = "User"."id"
-     left join "Tags" on "Tags"."userId" = "User"."id" and "Tags"."selected" = true
-     group by "CommandUse"."userId", "User"."id", "Economy"."userId", "Tags"."tagId"
-     having sum("CommandUse"."uses") is not null and "User"."blacklisted" = false
-     order by "value" desc limit 100`.then(
+    right join "CommandUse" on "CommandUse"."userId" = "User"."id" 
+    left join "Economy" on "Economy"."userId" = "User"."id"
+    left join "Tags" on "Tags"."userId" = "User"."id" and "Tags"."selected" = true
+    where "User"."blacklisted" = false
+    group by "CommandUse"."userId", "User"."id", "Economy"."userId", "Tags"."tagId"
+    order by "value" desc limit 100`.then(
       (
         i: {
           value: bigint;

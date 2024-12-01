@@ -1,8 +1,19 @@
 <script>
   import { page } from "$app/stores";
-  import { BadgePoundSterling, ChartArea, ChartBar, Coins } from "lucide-svelte";
+  import { auth } from "$lib/state.svelte";
+  import { BadgePoundSterling, ChartArea, Coins, LogOut, UserRound } from "lucide-svelte";
+  import { onMount } from "svelte";
 
-  let { children } = $props();
+  let { children, data } = $props();
+
+  onMount(() => {
+    if (data.user && !auth?.value) {
+      auth.value = {
+        authenticated: true,
+        user: data.user,
+      };
+    }
+  });
 </script>
 
 <div class="mx-auto mt-4 flex w-full max-w-6xl gap-8">
@@ -44,6 +55,27 @@
           <BadgePoundSterling />
           <span>purchases</span>
         </a>
+      </li>
+
+      <div class="divider my-0"></div>
+
+      <li>
+        <a
+          href="/user/{auth.value?.authenticated ? auth.value.user.id : null}"
+          class="flex items-center text-sm"
+        >
+          <UserRound size={16} />
+          <span>profile</span>
+        </a>
+      </li>
+
+      <div class="divider my-0"></div>
+
+      <li>
+        <a href="/logout" class="flex items-center text-sm text-error">
+          <LogOut size={16} />
+          <span>log out</span></a
+        >
       </li>
     </div>
   </ul>

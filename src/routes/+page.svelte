@@ -1,6 +1,6 @@
 <script lang="ts">
-  import Discord from "$lib/assets/svg/discord.svelte";
   import Features from "$lib/components/features/Features.svelte";
+  import Discord from "$lib/components/icons/Discord.svelte";
   import { auth } from "$lib/state.svelte";
   import { onMount } from "svelte";
   import { fade } from "svelte/transition";
@@ -29,12 +29,8 @@
     name="og:description"
     content="the best discord bot. includes gambling, economy, items, fake cryptocurrency, moderation, reaction roles, channel stats"
   />
-  <meta name="og:site_name" content="nypsi" />
 
-  <meta
-    name="og:image"
-    content="https://cdn.discordapp.com/avatars/678711738845102087/cb2dcd61010f2b89ceb1cd5ff15816cf.webp?size=128"
-  />
+  <meta name="og:image" content="https://cdn.nypsi.xyz/static/logo.png" />
   <meta property="og:image:width" content="128" />
   <meta property="og:image:height" content="128" />
 </svelte:head>
@@ -73,14 +69,17 @@
 <div class="hero min-h-screen">
   <div class="hero-content flex-col lg:-mt-64 lg:flex-row-reverse lg:gap-32">
     <div class="fly-up">
-      <enhanced:img
-        src="$lib/assets/hero.webp"
-        class="hidden max-w-sm lg:block"
-        decoding="async"
-        fetchpriority="high"
-        loading="eager"
-        alt="hero"
-      />
+      <picture>
+        <source srcset="https://cdn.nypsi.xyz/static/hero.avif" type="image/avif" />
+        <img
+          src="https://cdn.nypsi.xyz/static/hero.webp"
+          alt="hero"
+          class="hidden max-w-sm lg:block"
+          loading="eager"
+          decoding="async"
+          fetchpriority="high"
+        />
+      </picture>
     </div>
 
     <div class="-mt-64 text-center lg:mt-0 lg:text-left">

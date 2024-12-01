@@ -2,7 +2,6 @@
   import Chart from "$lib/components/Chart.svelte";
   import { guildSearchTerm } from "$lib/state.svelte";
   import type { ChartOptions } from "chart.js";
-  import { fly } from "svelte/transition";
   import Guild from "./Guild.svelte";
 
   let { data } = $props();
@@ -110,28 +109,12 @@
 
   {#if data.guild.success}
     <meta name="og:title" content={data.guild.guild.guildName} />
-    <meta name="og:site_name" content="nypsi" />
     <meta
-      name="description"
-      content="level {data.guild.guild.level} guild created by {data.guild.guild.owner.user
-        .lastKnownUsername} on {new Date(
-        data.guild.guild.createdAt,
-      ).toLocaleDateString()} with {data.guild.guild.members
-        .length} members: {data.guild.guild.members
-        .map((i) => i.economy.user.lastKnownUsername)
-        .join(', ')}"
+      name="og:image"
+      content={data.guild.guild.avatarId
+        ? `https://cdn.nypsi.xyz/${data.guild.guild.avatarId}`
+        : data.guild.guild.owner.user.avatar}
     />
-    <meta
-      name="og:description"
-      content="level {data.guild.guild.level} guild created by {data.guild.guild.owner.user
-        .lastKnownUsername} on {new Date(
-        data.guild.guild.createdAt,
-      ).toLocaleDateString()} with {data.guild.guild.members
-        .length} members: {data.guild.guild.members
-        .map((i) => i.economy.user.lastKnownUsername)
-        .join(', ')}"
-    />
-    <meta name="og:image" content={data.guild.guild.owner.user.avatar} />
     <meta property="og:image:width" content="128" />
     <meta property="og:image:height" content="128" />
   {:else}
@@ -140,17 +123,12 @@
 </svelte:head>
 
 <div>
-  {#if !data.guild.success}
-    <div
-      class="absolute left-1/2 top-1/4 -translate-x-1/2 -translate-y-1/2 transform"
-      in:fly={{ delay: 300, duration: 500, y: 75 }}
-    >
+  {#if data.guild.success}
+    <Guild guildData={data.guild} />
+  {:else}
+    <div class="absolute left-1/2 top-1/4 -translate-x-1/2 -translate-y-1/2 transform">
       <p class="text-xl font-bold text-slate-300">unknown guild</p>
     </div>
-  {:else}
-    {#key data.guild}
-      <Guild guildData={data.guild}></Guild>
-    {/key}
   {/if}
 </div>
 

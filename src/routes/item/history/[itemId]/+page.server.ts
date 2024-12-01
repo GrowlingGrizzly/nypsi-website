@@ -2,7 +2,7 @@ import getItems from "$lib/functions/items.js";
 import getItemHistoryData from "$lib/server/functions/graphs/getItemHistoryData.js";
 import { error, redirect } from "@sveltejs/kit";
 
-export async function load({ locals, params, url, fetch }) {
+export async function load({ locals, params, url, fetch, setHeaders }) {
   const auth = await locals.validate();
 
   if (!auth) {
@@ -15,7 +15,9 @@ export async function load({ locals, params, url, fetch }) {
     return { premium: false };
   }
 
-  const items = await getItems();
+  setHeaders({ "cache-control": "private, max-age=300, must-revalidate" });
+
+  const items = await getItems(fetch);
 
   const item = items.find((i) => i.id === params.itemId);
 
@@ -23,7 +25,7 @@ export async function load({ locals, params, url, fetch }) {
 
   const days = parseInt(url.searchParams.get("days") || "30");
 
-  const graphData = getItemHistoryData(item.id, auth.user.id, days, items);
+  const graphData = getItemHistoryData(items, item.id, auth.user.id, days);
 
   return { premium: true, graphData: await graphData, item, user: auth.user };
 }

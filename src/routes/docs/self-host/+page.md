@@ -14,7 +14,7 @@ technical knowledge. you will be ignored if you ask the owner for help.
 ## prerequisites
 
 - a computer
-- nodejs 20
+- nodejs 22
 - postgres
 - redis
 - a discord server
@@ -60,8 +60,6 @@ you must fill in your .env with your values. the below keys are **NOT required**
 function, however there will be missing functionality.
 
 - `TOPGG_TOKEN`
-- `DISCORD_IMAGE_AVATAR_CHANNEL`
-- `DISCORD_IMAGE_CHANNEL`
 - `LASTFM_TOKEN`
 - `S3_*`
 - `KOFI_VERIFICATION`

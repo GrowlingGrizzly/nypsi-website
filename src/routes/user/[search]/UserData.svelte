@@ -8,7 +8,7 @@
   import { onMount } from "svelte";
   import { fly } from "svelte/transition";
   import Loading from "../../../lib/components/Loading.svelte";
-  import Profile from "../../../lib/components/users/Profile.svelte";
+  import Profile from "./Profile.svelte";
   import Punishment from "./Punishment.svelte";
   import SmallInfo from "./SmallInfo.svelte";
 
@@ -128,7 +128,7 @@
                     ' ',
                     '-',
                   )}"
-                  class="text-lg text-white lg:text-2xl"
+                  class="link-hover text-lg text-white lg:text-2xl"
                 >
                   {userData.Economy.EconomyGuildMember.guild.guildName} [{userData.Economy
                     .EconomyGuildMember.guild.level}]
@@ -252,7 +252,7 @@
               >
                 {#each inPlaceSort(userData.Leaderboards).asc((i) => i.position) as lb}
                   <a
-                    href="/item/{lb.leaderboard.replace('item-', '')}"
+                    href="/leaderboard/{lb.leaderboard.replace('item-', '')}"
                     class="mx-2 flex flex-col items-center justify-center rounded-lg border border-primary border-opacity-5 bg-base-300 py-2 align-middle text-xs shadow duration-300 hover:border-opacity-25 lg:text-sm"
                   >
                     {#if lb.leaderboard.startsWith("item-")}

@@ -11,14 +11,15 @@ pages.push(
     .map((i) => `docs/${i}`),
 );
 
-export async function GET() {
-  const items = await getItems();
+export const prerender = true;
+
+export async function GET({ fetch }) {
+  const items = await getItems(fetch);
 
   pages.push(...items.map((i) => `item/${i.id}`));
 
   const body = sitemap(pages);
   const response = new Response(body);
-  response.headers.set("Cache-Control", "max-age=0, s-maxage=3600");
   response.headers.set("Content-Type", "application/xml");
   return response;
 }

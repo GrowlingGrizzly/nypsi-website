@@ -2,7 +2,15 @@
   import { navigating, page } from "$app/stores";
   import { paths, type PathsData } from "$lib/data/docs";
   import { auth } from "$lib/state.svelte";
-  import { ArrowLeft, BadgePoundSterling, ChartArea, Coins, X } from "lucide-svelte";
+  import {
+    ArrowLeft,
+    BadgePoundSterling,
+    ChartArea,
+    Coins,
+    LogOut,
+    UserRound,
+    X,
+  } from "lucide-svelte";
   import { fade, fly } from "svelte/transition";
 
   let { visible = $bindable(false) } = $props();
@@ -24,7 +32,11 @@
         </ul>
       </details>
     {:else}
-      <a class={path.path === $page.url.pathname ? "text-primary" : ""} href={path.path}>
+      <a
+        data-sveltekit-preload-code="eager"
+        class={path.path === $page.url.pathname ? "text-primary" : ""}
+        href={path.path}
+      >
         {path.name.replaceAll("-", " ")}
       </a>
     {/if}
@@ -35,7 +47,7 @@
   <div
     in:fly={{ x: -200, duration: 250 }}
     out:fly={{ x: -200, duration: 250 }}
-    class="fixed left-0 top-0 z-20 h-full w-[70%] overflow-y-scroll rounded-box bg-base-200 bg-opacity-95 p-2 shadow-xl shadow-base-300"
+    class="fixed left-0 top-0 z-20 h-full w-[70%] overflow-y-scroll rounded-box border-r border-primary border-opacity-15 bg-base-200 bg-opacity-95 p-2 shadow-xl shadow-base-300"
   >
     <button class="btn btn-ghost" onclick={() => (visible = !visible)}>
       <X strokeWidth={2.5} />
@@ -84,50 +96,76 @@
             >status</a
           >
         </li>
-        <li><a href="/docs">docs</a></li>
+        <li><a href="/docs/faq">docs</a></li>
         <li><a href="/discord" target="_blank">discord</a></li>
+
+        <li>
+          <a href="https://ko-fi.com/tekoh/tiers" target="_blank">
+            <span
+              class="bg-gradient-to-br from-violet-500 to-purple-500 bg-clip-text font-bold text-transparent"
+              >premium</span
+            >
+          </a>
+        </li>
 
         {#if auth.value?.authenticated}
           <li class="mt-1">
-            <h2 class={$page.url.pathname.startsWith("/me") ? "text-primary" : ""}>dashboard</h2>
+            <h2 class="menu-title">dashboard</h2>
+
+            <ul>
+              <li>
+                <a
+                  class="flex items-center {$page.url.pathname.startsWith('/me/stats')
+                    ? 'text-primary'
+                    : ''}"
+                  href="/me/stats"
+                >
+                  <Coins size={16} />
+                  <span>stats</span>
+                </a>
+              </li>
+
+              <li>
+                <a
+                  class="flex items-center {$page.url.pathname.startsWith('/me/graphs')
+                    ? 'text-primary'
+                    : ''}"
+                  href="/me/graphs"
+                >
+                  <ChartArea size={16} />
+                  <span>graphs</span>
+                </a>
+              </li>
+
+              <li>
+                <a
+                  class="flex items-center {$page.url.pathname.startsWith('/me/purchases')
+                    ? 'text-primary'
+                    : ''}"
+                  href="/me/purchases"
+                >
+                  <BadgePoundSterling size={16} />
+                  <span>purchases</span>
+                </a>
+              </li>
+
+              <li class="mt-2">
+                <a
+                  href="/user/{auth.value?.authenticated ? auth.value.user.id : null}"
+                  class="flex items-center"
+                >
+                  <UserRound size={16} />
+                  <span>profile</span>
+                </a>
+              </li>
+            </ul>
           </li>
-          <div class="pl-2">
-            <li>
-              <a
-                class="flex items-center {$page.url.pathname.startsWith('/me/stats')
-                  ? 'text-primary'
-                  : ''}"
-                href="/me/stats"
-              >
-                <Coins size={16} />
-                <span>stats</span>
-              </a>
-            </li>
-
-            <li>
-              <a
-                class="flex items-center {$page.url.pathname.startsWith('/me/graphs')
-                  ? 'text-primary'
-                  : ''}"
-                href="/me/graphs"
-              >
-                <ChartArea size={16} />
-                <span>graphs</span>
-              </a>
-            </li>
-
-            <li>
-              <a
-                class="flex items-center {$page.url.pathname.startsWith('/me/purchases')
-                  ? 'text-primary'
-                  : ''}"
-                href="/me/purchases"
-              >
-                <BadgePoundSterling size={16} />
-                <span>purchases</span>
-              </a>
-            </li>
-          </div>
+          <li>
+            <a href="/logout" class="flex items-center text-xs text-error">
+              <LogOut size={12} />
+              <span>log out</span></a
+            >
+          </li>
         {/if}
       </ul>
     {/if}
