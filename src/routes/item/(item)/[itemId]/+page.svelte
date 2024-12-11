@@ -33,6 +33,10 @@
 <svelte:head>
   <title>{data.item.name} / nypsi</title>
   <meta name="og:title" content="{data.item.name} / nypsi" />
+
+  <meta name="description" content={data.item.shortDesc} />
+  <meta name="og:description" content={data.item.shortDesc} />
+
   <meta name="og:image" content={data.item.emoji} />
   <meta property="og:image:width" content="128" />
   <meta property="og:image:height" content="128" />
@@ -46,6 +50,7 @@
         src={data.item.emoji}
         alt={data.item.id}
         decoding="async"
+        loading="eager"
       />
     </div>
     <div class="flex grow flex-col justify-center">
@@ -115,7 +120,7 @@
                 {#if item.role === "scratch-card"}
                   <a href="/docs/economy/items/scratch-cards" class="link">{item.name}</a>
                 {:else}
-                  <span>{item.name}</span>
+                  <a href="/item/{item.id}" class="link-hover">{item.name}</a>
                 {/if}
               {:else}
                 <span>{foundEntry[0]}</span>
@@ -155,7 +160,9 @@
                     class="h-full w-full object-contain"
                   />
                 </div>
-                <span>{item ? item.name : formatName(itemId)}</span>
+                <a href="/item/{itemId}" class="link-hover"
+                  >{item ? item.name : formatName(itemId)}</a
+                >
                 <span class="grow text-right">{chance}</span>
               </div>
             {/each}
@@ -174,8 +181,17 @@
             {@const [itemId, amount] = ingredient.split(":")}
             {@const item = data.items.find((i) => i.id === itemId)}
             <div class="flex items-center gap-1">
-              <img src={item.emoji} alt={itemId} decoding="async" loading="lazy" class="w-5" />
-              <a class="link" href="/item/{itemId}">{item ? item.name : formatName(itemId)}</a>
+              <div class="h-5 w-5">
+                <img
+                  src={item.emoji}
+                  alt={itemId}
+                  decoding="async"
+                  loading="lazy"
+                  class="h-full w-full object-contain"
+                />
+              </div>
+              <a class="link-hover" href="/item/{itemId}">{item ? item.name : formatName(itemId)}</a
+              >
               <span class="grow text-right">x{amount}</span>
             </div>
           {/each}
@@ -189,9 +205,18 @@
       <h3 class="text-center font-medium text-white">used in recipe</h3>
       <div class="grid max-h-48 grid-cols-2 overflow-auto">
         {#each data.items.filter((i) => i.craft && i.craft.ingredients.find( (j) => j.startsWith(data.item.id), )) as item}
-          <div class="flex items-center gap-1">
-            <img src={item.emoji} alt={item.id} decoding="async" loading="lazy" class="w-5" />
-            <a class="link" href="/item/{item.id}">{item ? item.name : formatName(item.id)}</a>
+          <div class="flex items-center justify-center gap-1">
+            <div class="h-5 w-5">
+              <img
+                src={item.emoji}
+                alt={item.id}
+                decoding="async"
+                loading="lazy"
+                class="h-full w-full object-contain"
+              />
+            </div>
+            <a class="link-hover" href="/item/{item.id}">{item ? item.name : formatName(item.id)}</a
+            >
           </div>
         {/each}
       </div>

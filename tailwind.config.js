@@ -1,3 +1,5 @@
+import { createRequire } from "module";
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./src/**/*.{html,js,svelte,ts}"],
@@ -9,7 +11,7 @@ export default {
   //   },
   // },
 
-  plugins: [require("daisyui")],
+  plugins: [createRequire(import.meta.url)("daisyui")],
 
   daisyui: {
     logs: false,
@@ -17,9 +19,9 @@ export default {
       {
         nypsi: {
           primary: "#8b5cf6",
-          secondary: "#C7F65C",
-          accent: "#5CF6D8",
-          "base-100": "#0f172a",
+          secondary: "#342C7D",
+          accent: "#6F49BF",
+          "base-100": "#091121",
           error: "#e31e3b",
           success: "#68f78c",
           "base-content": "#d9dce1",

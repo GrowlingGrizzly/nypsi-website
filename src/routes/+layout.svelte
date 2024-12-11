@@ -3,6 +3,7 @@
   import { onNavigate } from "$app/navigation";
   import { page } from "$app/stores";
   import Footer from "$lib/components/Footer.svelte";
+  import LoadBar from "$lib/components/LoadBar.svelte";
   import Navigation from "$lib/components/nav/Navigation.svelte";
   import { getClientAuth } from "$lib/functions/auth";
   import { auth, initialLoad } from "$lib/state.svelte";
@@ -69,8 +70,8 @@
   <meta name="og:url" content={$page.url.toString()} />
   <meta name="og:site_name" content="nypsi" />
 
-  <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)" />
-  <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#081121" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#081121" media="(prefers-color-scheme: light)" />
   <meta name="theme-color" content="#8b5cf6" />
 
   {#if !dev}
@@ -80,16 +81,11 @@
       data-website-id="d0bd590b-cc67-4315-b725-0105ada8ce61"
     ></script>
   {/if}
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
-    rel="stylesheet"
-  />
 </svelte:head>
 
 <div class="min-h-[100vh]">
+  <LoadBar />
+
   <!-- <ProgressBar class="text-primary" /> -->
 
   <Toaster />

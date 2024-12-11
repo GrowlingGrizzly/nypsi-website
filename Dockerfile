@@ -1,6 +1,6 @@
 # syntax = docker/dockerfile:1
 
-FROM node:22-alpine as base
+FROM node:22-slim as base
 
 LABEL fly_launch_runtime="SvelteKit/Prisma"
 
@@ -14,8 +14,8 @@ RUN npm install -g pnpm
 FROM base as build
 
 # Install packages needed to build node modules
-# RUN apt update -qq && \
-#     apt install --no-install-recommends -y build-essential node-gyp openssl pkg-config python-is-python3
+RUN apt update -qq && \
+    apt install --no-install-recommends -y build-essential node-gyp openssl pkg-config python-is-python3
 
 # Install node modules
 COPY --link .npmrc package.json pnpm-lock.yaml ./
@@ -39,9 +39,9 @@ RUN pnpm prune --prod
 FROM base
 
 # # # Install packages needed for deployment
-# RUN apt update -qq && \
-#     apt install --no-install-recommends -y openssl && \
-#     rm -rf /var/lib/apt/lists /var/cache/apt/archives
+RUN apt update -qq && \
+    apt install --no-install-recommends -y openssl && \
+    rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Copy built application
 COPY --from=build /app/build /app/build

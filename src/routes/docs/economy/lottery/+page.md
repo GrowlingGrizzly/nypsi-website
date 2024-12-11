@@ -1,13 +1,14 @@
 <script>
   import DocsTemplate from "$lib/components/docs/DocsTemplate.svelte"
+  import DocsHeader from '$lib/components/docs/DocsHeader.svelte';
 </script>
 
 <DocsTemplate title='lottery' />
 
-## how it works
+<DocsHeader header='h2' text="how it works" />
 
-the nypsi lottery runs every day at 12:00am utc. you can see the countdown for this in `/lottery tickets`. this will also show you how many tickets you have and your chance of winning.
+the nypsi lottery runs every day at 12:00am utc/gmt. you can see the countdown for this with the `$lottery` command. this will also show you how many tickets you have and the approximate prize pool.
 
-## how do i get tickets
+<DocsHeader header='h2' text="obtaining tickets" />
 
-you can get tickets by buying them with `/lottery buy` or from voting.
+you can buy tickets with `$buy lotto <amount>`. you also get tickets from voting and as a random item from crates.

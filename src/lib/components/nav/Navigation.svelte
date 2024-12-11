@@ -12,7 +12,11 @@
 <div class="flex w-full justify-center px-3 lg:px-0">
   <div class="navbar mt-3 rounded-xl bg-base-200 lg:max-w-6xl">
     <div class="navbar-start">
-      <button class="btn btn-ghost lg:hidden" onclick={() => (sidebarVisible = !sidebarVisible)}>
+      <button
+        aria-label="show mobile navigation"
+        class="btn btn-ghost lg:hidden"
+        onclick={() => (sidebarVisible = !sidebarVisible)}
+      >
         <Menu strokeWidth={2.5} />
       </button>
 
@@ -28,14 +32,15 @@
               alt="nypsi logo"
               decoding="async"
               class="h-10 w-10"
+              loading="lazy"
             />
           </picture>
         </a>
 
         <a href="/leaderboard" class="btn btn-ghost font-semibold">leaderboards</a>
-        <a href="/item/dave" class="btn btn-ghost font-semibold">items</a>
+        <a href="/item" class="btn btn-ghost font-semibold">items</a>
         <a href="/status" class="btn btn-ghost font-semibold">status</a>
-        <a href="/docs/faq" class="btn btn-ghost font-semibold">docs</a>
+        <a href="/docs" class="btn btn-ghost font-semibold">docs</a>
         <a href="/discord" class="btn btn-ghost font-semibold" target="_blank">discord</a>
         <a href="https://ko-fi.com/tekoh/tiers" target="_blank" class="btn btn-ghost py-0">
           <span
@@ -52,7 +57,7 @@
     <div class="w-auto">
       {#if !auth.value}
         <button class="btn btn-ghost" aria-label="loading">
-          <span class="loading loading-spinner"></span>
+          <span class="loading loading-spinner loading-sm"></span>
         </button>
       {:else if !auth.value.authenticated}
         <a href="/login?next={encodeURIComponent($page.url.pathname)}" class="btn btn-ghost"
@@ -62,12 +67,7 @@
         <a href="/me" class="btn btn-ghost">
           <div class="avatar">
             <div class="h-10 w-10 rounded-full">
-              <img
-                src={auth.value.user.avatar}
-                alt="your avatar"
-                decoding="async"
-                fetchpriority="high"
-              />
+              <img src={auth.value.user.avatar} alt="your avatar" decoding="async" />
             </div>
           </div>
         </a>

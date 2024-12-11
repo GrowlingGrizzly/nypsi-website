@@ -28,18 +28,29 @@ export function log(
   let referer: string | undefined;
 
   if (event.request.headers.has("referer")) {
-    referer = event.request.headers.get("referer");
-    if (new URL(referer)?.hostname === "nypsi.xyz") {
-      referer = `/${referer.split("/").slice(3).join("/")}`;
+    try {
+      referer = event.request.headers.get("referer");
+      if (new URL(referer)?.hostname === "nypsi.xyz") {
+        referer = `/${referer.split("/").slice(3).join("/")}`;
+      }
+    } catch (e) {
+      console.error(e);
+      console.error("failed to process referrer: " + referer);
     }
   }
+
+  let address: string | undefined;
+
+  try {
+    address = event.getClientAddress();
+  } catch {}
 
   const logData = {
     method: event.request.method,
     status: statusCode,
     path: event.url.pathname,
     referer,
-    ip_address: event.getClientAddress(),
+    ip_address: address,
     user_agent: event.request.headers.get("user-agent") || "",
     elapsed: performance.now() - event.locals.startTimer,
     params:

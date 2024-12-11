@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { parse } from "$lib/functions/twemoji";
+  import { parse } from "@twemoji/parser";
 
   interface Props {
     data: {
@@ -17,10 +17,11 @@
     background = "#c62828";
   }
 
-  let emojiUrl = $state("");
+  // svelte-ignore non_reactive_update
+  let emojiUrl = "";
 
-  if (data.emoji && parse(data.emoji.name, { assetType: "png" })) {
-    emojiUrl = parse(data.emoji.name, { assetType: "png" });
+  if (data.emoji && parse(data.emoji.name, { assetType: "png" })[0]?.url) {
+    emojiUrl = parse(data.emoji.name, { assetType: "png" })[0].url;
   } else if (data.emoji && data.emoji.id) {
     emojiUrl = `https://cdn.discordapp.com/emojis/${data.emoji.id}`;
 

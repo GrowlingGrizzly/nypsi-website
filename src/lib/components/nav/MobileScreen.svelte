@@ -87,7 +87,7 @@
           >
         </li>
         <li>
-          <a href="/item/dave" class={$page.url.pathname.startsWith("/item") ? "text-primary" : ""}
+          <a href="/item" class={$page.url.pathname.startsWith("/item") ? "text-primary" : ""}
             >items</a
           >
         </li>
@@ -96,7 +96,7 @@
             >status</a
           >
         </li>
-        <li><a href="/docs/faq">docs</a></li>
+        <li><a href="/docs">docs</a></li>
         <li><a href="/discord" target="_blank">discord</a></li>
 
         <li>
